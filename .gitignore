@@ -1,0 +1,42 @@
+# Python-specific ignores
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+*.pyo
+
+# Virtual environment
+venv/
+.env
+
+# Data files
+*.json
+*.npy
+*.bin
+*.db
+
+# Logs
+logs/
+*.log
+*.out
+*.err
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# IDE & OS-specific files
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# FAISS index & embeddings
+embeddings.npy
+faiss_index.bin
+
+# Model files & cache
+*.pt
+*.pth
+*.h5
+cache/
+__cache__/
