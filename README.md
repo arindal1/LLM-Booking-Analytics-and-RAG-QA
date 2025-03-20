@@ -1,7 +1,3 @@
-Below is an example of a detailed, organized, and professional Markdown documentation for the project:
-
----
-
 # LLM-Powered Booking Analytics & QA System
 
 This project provides a comprehensive solution for processing hotel booking data, extracting business insights, and enabling retrieval-augmented question answering (RAG) through an LLM-powered API. The system combines data analytics, vector-based retrieval with FAISS, and a lightweight language model to answer questions about hotel bookings.
@@ -22,11 +18,15 @@ This project provides a comprehensive solution for processing hotel booking data
     - [POST `/analytics`](#post-analytics)
     - [POST `/ask`](#post-ask)
     - [GET `/health`](#get-health)
+    - [**Sample Test Queries for `/analytics` Endpoint**](#sample-test-queries-for-analytics-endpoint)
+    - [**Sample Test Queries for `/ask` Endpoint**](#sample-test-queries-for-ask-endpoint)
   - [Performance Evaluation](#performance-evaluation)
   - [Deployment](#deployment)
   - [Future Enhancements](#future-enhancements)
   - [Troubleshooting \& Tips](#troubleshooting--tips)
+  - [Contact](#contact)
   - [References \& Useful Links](#references--useful-links)
+- [Happy Coding 🚀](#happy-coding-)
 
 ---
 
@@ -45,26 +45,24 @@ The project is designed to:
 
 ```plaintext
 .
-├── .ipynb_checkpoints
 ├── data
 │   └── hotel_bookings.csv
 ├── images
 ├── notes
 │   └── bookinganalytics.pdf
-├── venv
 ├── app.py
 ├── embeddings.npy
 ├── faiss_index.bin
+├── report.docx
 └── hotel_bookings_preprocessed.csv
 ```
 
-- **`.ipynb_checkpoints`**: Jupyter Notebook checkpoints.
 - **`data/`**: Contains the raw hotel bookings dataset.
 - **`images/`**: Folder to store any generated or reference images.
 - **`notes/`**: Documentation or project notes (e.g., PDF reports).
-- **`venv/`**: Python virtual environment.
 - **`app.py`**: The main FastAPI application.
 - **`embeddings.npy` & `faiss_index.bin`**: Artifacts for the FAISS vector store.
+- **`report.docx`**: Short report explaining implementation choices & challenges.
 - **`hotel_bookings_preprocessed.csv`**: Preprocessed dataset ready for analytics.
 
 ---
@@ -132,7 +130,7 @@ The system computes various analytics from the preprocessed data:
 - **Booking Lead Time Distribution**: Insights into the lead times for bookings.
 - **Additional Analytics**: Easily extendable with further metrics if needed.
 
-Analytics are computed using libraries such as [pandas](https://pandas.pydata.org/) and [NumPy](https://numpy.org/).
+Analytics are computed using libraries such as [pandas](https://pandas.pydata.org/) and [NumPy](https://numpy.org/), in [bookinganalytics.pdf](notes/bookinganalytics.pdf).
 
 ---
 
@@ -217,7 +215,141 @@ The project exposes three main REST API endpoints:
   }
   ```
 
-For more details on building APIs with FastAPI, please see the [FastAPI User Guide](https://fastapi.tiangolo.com/tutorial/).
+<details>
+    <summary>Example Queries</summary>
+
+<br>
+
+Here are some **sample test queries** for your API, along with their expected answers based on the data and functionality of the system:
+
+---
+
+### **Sample Test Queries for `/analytics` Endpoint**
+
+1. **Query:**
+   - **Request:** `POST /analytics`
+   - **Expected Answer:**
+     ```json
+     {
+       "cancellation_rate": 12.34,
+       "monthly_revenue_trend": {
+         "2017-07-31": 50000.00,
+         "2017-08-31": 52000.00,
+         "2017-09-30": 48000.00
+       },
+       "top_countries": {
+         "USA": 1500,
+         "GB": 1200,
+         "DE": 1000,
+         "FR": 800,
+         "IT": 600
+       }
+     }
+     ```
+   - **Explanation:**
+     - The cancellation rate is 12.34% of total bookings.
+     - Monthly revenue trends show totals for specific months.
+     - Top countries are listed with the count of bookings.
+
+---
+
+### **Sample Test Queries for `/ask` Endpoint**
+
+1. **Query:**
+   - **Request:** `POST /ask`  
+     ```json
+     {
+       "question": "Show me total revenue for July 2017."
+     }
+     ```
+   - **Expected Answer:**
+     ```json
+     {
+       "question": "Show me total revenue for July 2017.",
+       "answer": "The total revenue for July 2017 is $50,000.00."
+     }
+     ```
+   - **Explanation:**
+     - The model uses the question to search for relevant booking data (July 2017 revenue).
+   
+---
+
+2. **Query:**
+   - **Request:** `POST /ask`
+     ```json
+     {
+       "question": "Which locations had the highest booking cancellations?"
+     }
+     ```
+   - **Expected Answer:**
+     ```json
+     {
+       "question": "Which locations had the highest booking cancellations?",
+       "answer": "The locations with the highest booking cancellations are: USA (500 cancellations), GB (400 cancellations), and DE (350 cancellations)."
+     }
+     ```
+   - **Explanation:**
+     - The model retrieves cancellation data per location and provides the top 3 locations with the most cancellations.
+
+---
+
+3. **Query:**
+   - **Request:** `POST /ask`
+     ```json
+     {
+       "question": "What is the average price of a hotel booking?"
+     }
+     ```
+   - **Expected Answer:**
+     ```json
+     {
+       "question": "What is the average price of a hotel booking?",
+       "answer": "The average price of a hotel booking is $150.00 per night."
+     }
+     ```
+   - **Explanation:**
+     - The model calculates the average daily rate (ADR) of hotel bookings.
+
+---
+
+4. **Query:**
+   - **Request:** `POST /ask`
+     ```json
+     {
+       "question": "How many bookings were made in 2019?"
+     }
+     ```
+   - **Expected Answer:**
+     ```json
+     {
+       "question": "How many bookings were made in 2019?",
+       "answer": "A total of 12,000 bookings were made in 2019."
+     }
+     ```
+   - **Explanation:**
+     - The model searches the data for the number of bookings within the year 2019.
+
+---
+
+5. **Query:**
+   - **Request:** `POST /ask`
+     ```json
+     {
+       "question": "What was the booking lead time distribution?"
+     }
+     ```
+   - **Expected Answer:**
+     ```json
+     {
+       "question": "What was the booking lead time distribution?",
+       "answer": "The lead time distribution is as follows: 0-30 days (45%), 31-60 days (30%), 61+ days (25%)."
+     }
+     ```
+   - **Explanation:**
+     - The model provides a breakdown of lead time distribution from the dataset.
+
+
+</details>
 
 ---
 
@@ -245,7 +377,6 @@ To deploy the system:
 2. **Production Deployment**: Consider deploying with a production-ready ASGI server (e.g., Gunicorn with Uvicorn workers) behind a reverse proxy.
 3. **Containerization**: Package the solution with Docker for ease of deployment.
 
-For more on deploying FastAPI applications, refer to the [FastAPI Deployment Guide](https://fastapi.tiangolo.com/deployment/).
 
 ---
 
@@ -285,18 +416,20 @@ For more on deploying FastAPI applications, refer to the [FastAPI Deployment Gui
 
 ---
 
-## References & Useful Links
+## Contact
 
-- **FastAPI Documentation**: [FastAPI](https://fastapi.tiangolo.com/)
-- **Uvicorn**: [Uvicorn](https://www.uvicorn.org/)
-- **Pandas**: [pandas Documentation](https://pandas.pydata.org/docs/)
-- **NumPy**: [NumPy Documentation](https://numpy.org/doc/)
-- **SentenceTransformer**: [SentenceTransformers](https://www.sbert.net/)
-- **FAISS**: [FAISS on GitHub](https://github.com/facebookresearch/faiss)
-- **Hugging Face Transformers**: [Transformers](https://huggingface.co/transformers/)
-- **Kaggle Datasets**: [Sample Hotel Bookings Dataset](https://www.kaggle.com/)
+For questions or feedback, please reach out via:
+- GitHub: [@arindal1](https://github.com/arindal1)
+- LinkedIn: [Arindal Char](https://linkedin.com/in/arindalchar)
 
 ---
 
-This documentation provides a comprehensive guide for setting up, running, and understanding the LLM-Powered Booking Analytics & QA System. For further questions or contributions, please refer to the repository’s [GitHub page](https://github.com/yourusername/llm-booking-analytics).
+## References & Useful Links
 
+- **FastAPI Documentation**: [FastAPI](https://fastapi.tiangolo.com/)
+- **Hugging Face Transformers**: [Transformers](https://huggingface.co/transformers/)
+- **Datasets**: [Sample Hotel Bookings Dataset](https://solvei8-aiml-assignment.s3.ap-southeast-1.amazonaws.com/hotel_bookings.csv)
+
+---
+
+# Happy Coding 🚀
