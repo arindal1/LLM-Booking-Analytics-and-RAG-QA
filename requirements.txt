@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pandas
+numpy
+sentence-transformers
+faiss-cpu
+transformers
+torch
+pydantic
+matplotlib
+seaborn
